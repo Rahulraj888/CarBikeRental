@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.List, com.groupb.rental.bean.Booking" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.List, com.groupb.rental.model.Booking" %>
 <%
     request.setAttribute("pageTitle", "My Bookings");
 %>
