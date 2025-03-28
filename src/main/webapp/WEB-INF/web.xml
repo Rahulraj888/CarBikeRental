@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" 
+         version="3.1">
+         
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>com.groupb.rental.servlet.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/UserServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>com.groupb.rental.servlet.BookingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/BookingServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>VehicleServlet</servlet-name>
+        <servlet-class>com.groupb.rental.servlet.VehicleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VehicleServlet</servlet-name>
+        <url-pattern>/VehicleServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+	    <servlet-name>ContactServlet</servlet-name>
+	    <servlet-class>com.groupb.rental.servlet.ContactServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>ContactServlet</servlet-name>
+	    <url-pattern>/ContactServlet</url-pattern>
+	</servlet-mapping>
+	    
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+</web-app>
