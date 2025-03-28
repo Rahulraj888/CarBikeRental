@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" import="com.groupb.rental.bean.Vehicle" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import="com.groupb.rental.model.Vehicle" %>
 <%
     request.setAttribute("pageTitle", "Book Vehicle");
     // Retrieve the vehicle object, if available.

@@ -1,7 +1,7 @@
 package com.groupb.rental.dao;
 
 
-import com.groupb.rental.bean.User;
+import com.groupb.rental.model.User;
 import com.groupb.rental.util.DBConnection;
 import java.sql.*;
 

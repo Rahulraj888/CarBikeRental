@@ -1,8 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.List, com.groupb.rental.bean.Booking, com.groupb.rental.dao.BookingDAO" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import="java.util.List, com.groupb.rental.model.Booking, com.groupb.rental.dao.BookingDAO" %>
 <%
     // Assuming the user is logged in, get the booking list from the DAO.
-    // (Not the best practice to access DAO directly in JSP, but acceptable for demonstration.)
-    int userId = ((com.groupb.rental.bean.User) session.getAttribute("user")).getId();
+    int userId = ((com.groupb.rental.model.User) session.getAttribute("user")).getId();
     List<Booking> bookingList = BookingDAO.getBookingsByUser(userId);
     request.setAttribute("bookingList", bookingList);
 %>

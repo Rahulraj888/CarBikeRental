@@ -14,14 +14,19 @@
       crossorigin="anonymous"
     />
     <style>
-	    .nav-item a{
-	    	color:white;
-	    	font-weight:bold;
-	    }
-	    .navbar-brand {
-	    	color:white;
-	    	font-weight:bold;
-	    }
+	    .nav-item a, 
+		.navbar-brand {
+		    color: white;
+		    margin-inline: 10px;
+		    font-weight: bold;
+		}
+
+		.nav-item a:hover,
+		.navbar-brand:hover {
+		    color: white;
+		    font-size: 1.1em;
+		    font-weight: bold;
+		}
     </style>
     
 </head>
@@ -48,10 +53,7 @@
             <li class="nav-item"><a class="nav-link" href="login.jsp">Login</a></li>
             <li class="nav-item"><a class="nav-link" href="register.jsp">Register</a></li>
             <li class="nav-item"><a class="nav-link" href="BookingServlet?action=list">Dashboard</a></li>
-            <!-- NEW: Vehicles link -->
-			<li class="nav-item">
-			  <a class="nav-link" href="VehicleServlet?action=list">Vehicles</a>
-			</li>
+			<li class="nav-item"><a class="nav-link" href="VehicleServlet?action=list">Vehicles</a></li>
           </ul>
         </div>
       </div>

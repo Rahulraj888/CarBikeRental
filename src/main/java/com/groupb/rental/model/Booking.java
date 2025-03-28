@@ -1,4 +1,4 @@
-package com.groupb.rental.bean;
+package com.groupb.rental.model;
 
 import java.util.Date;
 

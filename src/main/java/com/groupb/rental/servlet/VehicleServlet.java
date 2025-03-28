@@ -1,7 +1,7 @@
 package com.groupb.rental.servlet;
 
-import com.groupb.rental.bean.Vehicle;
-import com.groupb.rental.bean.User;
+import com.groupb.rental.model.Vehicle;
+import com.groupb.rental.model.User;
 import com.groupb.rental.dao.VehicleDAO;
 
 import javax.servlet.*;
@@ -15,7 +15,7 @@ public class VehicleServlet extends HttpServlet {
 
         String action = request.getParameter("action");
         if(action == null) {
-            action = "list"; // default to listing vehicles
+            action = "list";
         }
 
         // If the action is just "list", we allow anyone (logged in or not) to see the list
@@ -86,7 +86,7 @@ public class VehicleServlet extends HttpServlet {
 
         Vehicle vehicle = new Vehicle(0, type, brand, model, pricePerDay, available);
         VehicleDAO.addVehicle(vehicle);
-        response.sendRedirect("VehicleServlet"); // goes back to 'action=list'
+        response.sendRedirect("VehicleServlet"); 
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)

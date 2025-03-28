@@ -6,7 +6,6 @@
 
 <main class="container my-4 flex-grow-1">
 <h2>My Bookings</h2>
-<a href="dashboard.jsp" class="btn btn-secondary mb-3">Back to Dashboard</a>
 <table class="table table-bordered table-striped">
   <thead class="table-dark">
     <tr>

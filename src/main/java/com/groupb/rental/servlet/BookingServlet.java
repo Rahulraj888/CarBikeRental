@@ -1,10 +1,10 @@
 package com.groupb.rental.servlet;
 
-import com.groupb.rental.bean.Booking;
+import com.groupb.rental.model.Booking;
 import com.groupb.rental.dao.BookingDAO;
 import com.groupb.rental.dao.VehicleDAO;
-import com.groupb.rental.bean.Vehicle;
-import com.groupb.rental.bean.User;
+import com.groupb.rental.model.Vehicle;
+import com.groupb.rental.model.User;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;

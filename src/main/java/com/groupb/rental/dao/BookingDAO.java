@@ -1,6 +1,6 @@
 package com.groupb.rental.dao;
 
-import com.groupb.rental.bean.Booking;
+import com.groupb.rental.model.Booking;
 import com.groupb.rental.util.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
