@@ -49,10 +49,18 @@ public class UserServlet extends HttpServlet {
             if(user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                response.sendRedirect("dashboard.jsp");
+                // Check for a stored redirect URL
+                String redirectURL = (String) session.getAttribute("redirectAfterLogin");
+                if(redirectURL != null) {
+                    session.removeAttribute("redirectAfterLogin");
+                    response.sendRedirect(redirectURL);
+                } else {
+                    response.sendRedirect("dashboard.jsp");
+                }
             } else {
                 response.sendRedirect("login.jsp?error=Invalid credentials");
             }
         }
+
     }
 }
