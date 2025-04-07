@@ -47,7 +47,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="intro.jsp">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="about.jsp">About Us</a></li>
             <li class="nav-item"><a class="nav-link" href="contact.jsp">Contact Us</a></li>
 <%
