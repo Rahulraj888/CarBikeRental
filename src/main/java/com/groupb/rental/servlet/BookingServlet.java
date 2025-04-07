@@ -16,6 +16,13 @@ public class BookingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Ensure user is logged in
         HttpSession session = request.getSession();
+        String currentURL = request.getRequestURL().toString();
+	    String queryString = request.getQueryString();
+	    if(queryString != null) {
+	        currentURL += "?" + queryString;
+	    }
+	    // Save the current URL and query string
+	    session.setAttribute("redirectAfterLogin", currentURL);
         if(session.getAttribute("user") == null) {
             response.sendRedirect("login.jsp");
             return;
@@ -46,11 +53,13 @@ public class BookingServlet extends HttpServlet {
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Handle booking creation
-        HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+    	// In BookingServlet.doGet:
+    	HttpSession session = request.getSession();
+    	if (session.getAttribute("user") == null) {
+    	    response.sendRedirect("login.jsp");
+    	    return;
+    	}
+
         
         try {
             int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
