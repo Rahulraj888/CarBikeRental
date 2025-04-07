@@ -63,7 +63,6 @@
 <%
     }
 %>
-            <li class="nav-item"><a class="nav-link" href="BookingServlet?action=list">Dashboard</a></li>
             <li class="nav-item"><a class="nav-link" href="VehicleServlet?action=list">Vehicles</a></li>
           </ul>
         </div>
