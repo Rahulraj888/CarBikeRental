@@ -47,17 +47,26 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="intro.jsp">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="about.jsp">About Us</a></li>
             <li class="nav-item"><a class="nav-link" href="contact.jsp">Contact Us</a></li>
+<%
+    com.groupb.rental.model.User user = (com.groupb.rental.model.User) session.getAttribute("user");
+    if(user != null) {
+%>
+            <li class="nav-item"><a class="nav-link" href="dashboard.jsp">Profile</a></li>
+<%
+    } else {
+%>
             <li class="nav-item"><a class="nav-link" href="login.jsp">Login</a></li>
             <li class="nav-item"><a class="nav-link" href="register.jsp">Register</a></li>
-            <li class="nav-item"><a class="nav-link" href="BookingServlet?action=list">Dashboard</a></li>
-			<li class="nav-item"><a class="nav-link" href="VehicleServlet?action=list">Vehicles</a></li>
+<%
+    }
+%>
+            <li class="nav-item"><a class="nav-link" href="VehicleServlet?action=list">Vehicles</a></li>
           </ul>
         </div>
       </div>
     </nav>
 
     <!-- Main container starts -->
- 

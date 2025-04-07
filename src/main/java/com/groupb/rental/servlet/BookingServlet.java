@@ -42,7 +42,7 @@ public class BookingServlet extends HttpServlet {
                 int userId = ((User) session.getAttribute("user")).getId();
                 List<Booking> bookingList = BookingDAO.getBookingsByUser(userId);
                 request.setAttribute("bookingList", bookingList);
-                RequestDispatcher listDispatcher = request.getRequestDispatcher("bookingList.jsp");
+                RequestDispatcher listDispatcher = request.getRequestDispatcher("dashboard.jsp");
                 listDispatcher.forward(request, response);
                 break;
             default:
