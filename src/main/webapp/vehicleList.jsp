@@ -23,7 +23,7 @@
                     File imgFile = new File(realPath);
                     if (!imgFile.exists()) {
                         // Fallback to placeholder if not found
-                        imagePath = "images/placeholder.jpeg";
+                        imagePath = "images/default.jpeg";
                     }
         %>
         <div class="col">
