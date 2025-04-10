@@ -16,7 +16,6 @@
         <%
             if (vehicleList != null) {
                 for (Vehicle v : vehicleList) {
-                   
                     String normalizedModel = v.getModel().toLowerCase().replaceAll("\\s+", "_");
                     String imagePath = "images/" + normalizedModel + ".jpeg";
                     // Check if the file actually exists on the server
@@ -24,7 +23,7 @@
                     File imgFile = new File(realPath);
                     if (!imgFile.exists()) {
                         // Fallback to placeholder if not found
-                        imagePath = "images/placeholder.jpeg";
+                        imagePath = "images/default.jpeg";
                     }
         %>
         <div class="col">

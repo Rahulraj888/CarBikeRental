@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
-    import="java.util.List, com.groupb.rental.model.Booking, com.groupb.rental.dao.BookingDAO, com.groupb.rental.model.User" %>
+    import="java.util.List, com.groupb.rental.model.Booking, com.groupb.rental.dao.BookingDAOInterface, com.groupb.rental.dao.BookingDAOImpl, com.groupb.rental.model.User" %>
 <%
     // Get the current logged-in user from the session
     User user = (User) session.getAttribute("user");
@@ -39,7 +39,9 @@
             </div>
             <% } else if ("bookings".equals(option) && !"admin".equalsIgnoreCase(user.getRole())) {
                     int userId = user.getId();
-                    List<Booking> bookingList = BookingDAO.getBookingsByUser(userId);
+                    // Instantiate DAO and call the non-static method now.
+                    com.groupb.rental.dao.BookingDAOInterface bookingDAO = new com.groupb.rental.dao.BookingDAOImpl();
+                    List<Booking> bookingList = bookingDAO.getBookingsByUser(userId);
             %>
             <div class="card mb-4">
                 <div class="card-header bg-success text-white">Your Bookings</div>

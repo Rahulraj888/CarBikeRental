@@ -1,21 +1,16 @@
 package com.groupb.rental.servlet;
 
-
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.groupb.rental.servlet.VehicleServlet;
+import org.junit.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import com.groupb.rental.model.User;
 import com.groupb.rental.model.Vehicle;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.*;
-
 import java.io.IOException;
 
+/**
+ * Tests for VehicleServlet verifying the various vehicle management actions.
+ */
 public class VehicleServletTest {
 
     private VehicleServlet servlet;
@@ -24,6 +19,9 @@ public class VehicleServletTest {
     private HttpSession session;
     private RequestDispatcher dispatcher;
 
+    /**
+     * setUp() method initializes mocks for all tests in this class.
+     */
     @Before
     public void setUp() {
         servlet = new VehicleServlet();
@@ -32,61 +30,73 @@ public class VehicleServletTest {
         session = mock(HttpSession.class);
         dispatcher = mock(RequestDispatcher.class);
 
+        // Set up session and request stubs
         when(request.getSession(anyBoolean())).thenReturn(session);
         when(request.getSession()).thenReturn(session);
         when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
     }
 
+    /**
+     * Tests that when action=list, the servlet forwards to vehicleList.jsp.
+     */
     @Test
     public void testListVehicles() throws Exception {
-        // If action=list, anyone can see the list
         when(request.getParameter("action")).thenReturn("list");
-        // No user needed in session
+        // No user is required for listing vehicles publicly
         servlet.doGet(request, response);
 
-        // Should forward to vehicleList.jsp
+        // Verify forward to vehicleList.jsp occurs
         verify(dispatcher).forward(request, response);
     }
 
+    /**
+     * Tests that if an admin action is requested while no user is logged in,
+     * the servlet redirects to login.jsp with an error message.
+     */
     @Test
     public void testAdminActionsWithoutLogin() throws Exception {
-        // action=new, but user is not logged in
         when(request.getParameter("action")).thenReturn("new");
         when(session.getAttribute("user")).thenReturn(null);
 
         servlet.doGet(request, response);
-        // Should redirect to login.jsp?error=Unauthorized access
         verify(response).sendRedirect("login.jsp?error=Unauthorized access");
     }
 
+    /**
+     * Tests that if a customer (non-admin) attempts an admin action,
+     * the servlet redirects to login.jsp with an error.
+     */
     @Test
     public void testAdminActionsAsCustomer() throws Exception {
-        // action=new, but user is a "customer", not "admin"
         when(request.getParameter("action")).thenReturn("new");
         User customer = new User(1, "testCust", "pass", "test@example.com", "customer");
         when(session.getAttribute("user")).thenReturn(customer);
 
         servlet.doGet(request, response);
-        // Should redirect to login.jsp?error=Unauthorized access
         verify(response).sendRedirect("login.jsp?error=Unauthorized access");
     }
 
+    /**
+     * Tests that when an admin requests to add a new vehicle (action=new),
+     * the servlet forwards to vehicleForm.jsp.
+     */
     @Test
     public void testNewVehicleAsAdmin() throws Exception {
-        // action=new, user is admin
         when(request.getParameter("action")).thenReturn("new");
         User admin = new User(1, "adminUser", "pass", "admin@example.com", "admin");
         when(session.getAttribute("user")).thenReturn(admin);
 
         servlet.doGet(request, response);
-        // Should forward to vehicleForm.jsp
         verify(dispatcher).forward(request, response);
     }
 
+    /**
+     * Tests that inserting a new vehicle as an admin eventually redirects to the vehicle list.
+     */
     @Test
     public void testInsertVehicleAsAdmin() throws Exception {
-        // action=insert, user is admin
         when(request.getParameter("action")).thenReturn("insert");
+        // Provide vehicle information via request parameters
         when(request.getParameter("type")).thenReturn("Car");
         when(request.getParameter("brand")).thenReturn("Toyota");
         when(request.getParameter("model")).thenReturn("Camry");
@@ -97,13 +107,14 @@ public class VehicleServletTest {
         when(session.getAttribute("user")).thenReturn(admin);
 
         servlet.doGet(request, response);
-        // Should eventually redirect to VehicleServlet (action=list)
         verify(response).sendRedirect("VehicleServlet");
     }
 
+    /**
+     * Tests that editing a vehicle as an admin forwards to vehicleForm.jsp.
+     */
     @Test
     public void testEditVehicleAsAdmin() throws Exception {
-        // action=edit, user is admin
         when(request.getParameter("action")).thenReturn("edit");
         when(request.getParameter("id")).thenReturn("101");
 
@@ -111,13 +122,14 @@ public class VehicleServletTest {
         when(session.getAttribute("user")).thenReturn(admin);
 
         servlet.doGet(request, response);
-        // Should forward to vehicleForm.jsp
         verify(dispatcher).forward(request, response);
     }
 
+    /**
+     * Tests that deleting a vehicle as an admin redirects to the vehicle list.
+     */
     @Test
     public void testDeleteVehicleAsAdmin() throws Exception {
-        // action=delete, user is admin
         when(request.getParameter("action")).thenReturn("delete");
         when(request.getParameter("id")).thenReturn("101");
 
@@ -125,7 +137,6 @@ public class VehicleServletTest {
         when(session.getAttribute("user")).thenReturn(admin);
 
         servlet.doGet(request, response);
-        // Should redirect to VehicleServlet
         verify(response).sendRedirect("VehicleServlet");
     }
 }
