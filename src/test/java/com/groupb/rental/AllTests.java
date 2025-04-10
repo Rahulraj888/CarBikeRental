@@ -21,5 +21,9 @@ import com.groupb.rental.servlet.VehicleServletTest;
     VehicleServletTest.class
 })
 public class AllTests {
-    // No code needed here; the annotations do all the work
+	
+	static {
+        // Set the system property for environment configuration for test database.
+        System.setProperty("env", "test");
+    }
 }

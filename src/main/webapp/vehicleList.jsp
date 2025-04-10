@@ -16,7 +16,6 @@
         <%
             if (vehicleList != null) {
                 for (Vehicle v : vehicleList) {
-                   
                     String normalizedModel = v.getModel().toLowerCase().replaceAll("\\s+", "_");
                     String imagePath = "images/" + normalizedModel + ".jpeg";
                     // Check if the file actually exists on the server

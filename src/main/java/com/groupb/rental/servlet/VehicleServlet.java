@@ -2,8 +2,8 @@ package com.groupb.rental.servlet;
 
 import com.groupb.rental.model.Vehicle;
 import com.groupb.rental.model.User;
-import com.groupb.rental.dao.VehicleDAO;
-
+import com.groupb.rental.dao.VehicleDAOInterface;
+import com.groupb.rental.dao.VehicleDAOImpl;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -18,13 +18,13 @@ public class VehicleServlet extends HttpServlet {
             action = "list";
         }
 
-        // If the action is just "list", we allow anyone (logged in or not) to see the list
+        // If the action is "list", allow anyone (logged in or not) to see the list
         if (action.equals("list")) {
             listVehicles(request, response);
             return;
         }
 
-        // Otherwise, we require an admin user
+        // Otherwise, require an admin user
         HttpSession session = request.getSession(false);
         User user = (session != null) ? (User) session.getAttribute("user") : null;
         if(user == null || !"admin".equals(user.getRole())) {
@@ -51,7 +51,7 @@ public class VehicleServlet extends HttpServlet {
                 updateVehicle(request, response);
                 break;
             default:
-                // if an unknown action is provided, just list
+                // if unknown action provided, list vehicles
                 listVehicles(request, response);
                 break;
         }
@@ -64,7 +64,8 @@ public class VehicleServlet extends HttpServlet {
 
     private void listVehicles(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Vehicle> list = VehicleDAO.getAllVehicles();
+        VehicleDAOInterface vehicleDAO = new VehicleDAOImpl();
+        List<Vehicle> list = vehicleDAO.getAllVehicles();
         request.setAttribute("vehicleList", list);
         RequestDispatcher dispatcher = request.getRequestDispatcher("vehicleList.jsp");
         dispatcher.forward(request, response);
@@ -84,15 +85,24 @@ public class VehicleServlet extends HttpServlet {
         double pricePerDay = Double.parseDouble(request.getParameter("pricePerDay"));
         boolean available = (request.getParameter("available") != null);
 
-        Vehicle vehicle = new Vehicle(0, type, brand, model, pricePerDay, available);
-        VehicleDAO.addVehicle(vehicle);
-        response.sendRedirect("VehicleServlet"); 
+        Vehicle vehicle = new Vehicle();
+        vehicle.setId(0);
+        vehicle.setType(type);
+        vehicle.setBrand(brand);
+        vehicle.setModel(model);
+        vehicle.setPricePerDay(pricePerDay);
+        vehicle.setAvailable(available);
+
+        VehicleDAOInterface vehicleDAO = new VehicleDAOImpl();
+        vehicleDAO.addVehicle(vehicle);
+        response.sendRedirect("VehicleServlet");
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        Vehicle vehicle = VehicleDAO.getVehicleById(id);
+        VehicleDAOInterface vehicleDAO = new VehicleDAOImpl();
+        Vehicle vehicle = vehicleDAO.getVehicleById(id);
         request.setAttribute("vehicle", vehicle);
         RequestDispatcher dispatcher = request.getRequestDispatcher("vehicleForm.jsp");
         dispatcher.forward(request, response);
@@ -107,15 +117,24 @@ public class VehicleServlet extends HttpServlet {
         double pricePerDay = Double.parseDouble(request.getParameter("pricePerDay"));
         boolean available = (request.getParameter("available") != null);
 
-        Vehicle vehicle = new Vehicle(id, type, brand, model, pricePerDay, available);
-        VehicleDAO.updateVehicle(vehicle);
-        response.sendRedirect("VehicleServlet"); // goes back to 'action=list'
+        Vehicle vehicle = new Vehicle();
+        vehicle.setId(id);
+        vehicle.setType(type);
+        vehicle.setBrand(brand);
+        vehicle.setModel(model);
+        vehicle.setPricePerDay(pricePerDay);
+        vehicle.setAvailable(available);
+
+        VehicleDAOInterface vehicleDAO = new VehicleDAOImpl();
+        vehicleDAO.updateVehicle(vehicle);
+        response.sendRedirect("VehicleServlet");
     }
 
     private void deleteVehicle(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        VehicleDAO.deleteVehicle(id);
-        response.sendRedirect("VehicleServlet"); // goes back to 'action=list'
+        VehicleDAOInterface vehicleDAO = new VehicleDAOImpl();
+        vehicleDAO.deleteVehicle(id);
+        response.sendRedirect("VehicleServlet");
     }
 }

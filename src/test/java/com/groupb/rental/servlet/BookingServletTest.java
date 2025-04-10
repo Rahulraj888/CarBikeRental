@@ -1,20 +1,11 @@
 package com.groupb.rental.servlet;
 
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import com.groupb.rental.servlet.BookingServlet;
 import com.groupb.rental.model.User;
-import com.groupb.rental.model.Vehicle;
-import com.groupb.rental.dao.VehicleDAO;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.*;
-
-import java.io.IOException;
 
 public class BookingServletTest {
 
@@ -32,8 +23,12 @@ public class BookingServletTest {
         session = mock(HttpSession.class);
         dispatcher = mock(RequestDispatcher.class);
 
+        // Stub getSession() and getRequestDispatcher()
         when(request.getSession()).thenReturn(session);
         when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+
+        // Stub getRequestURL() so that it returns a valid URL
+        when(request.getRequestURL()).thenReturn(new StringBuffer("http://localhost:8080/BookingServlet"));
     }
 
     @Test
@@ -46,12 +41,16 @@ public class BookingServletTest {
         verify(response).sendRedirect("login.jsp");
     }
 
-
     @Test
     public void testActionList() throws Exception {
-        // If user is logged in, and action=list
-        // Should forward to bookingList.jsp with bookingList
-        User user = new User(1, "testUser", "testPass", "test@example.com", "customer");
+        // When a user is logged in and action=list, it should forward with a bookingList attribute
+        User user = new User();
+        user.setId(1);
+        user.setUsername("testUser");
+        user.setPassword("testPass");
+        user.setEmail("test@example.com");
+        user.setRole("customer");
+        
         when(session.getAttribute("user")).thenReturn(user);
         when(request.getParameter("action")).thenReturn("list");
 
@@ -63,8 +62,15 @@ public class BookingServletTest {
 
     @Test
     public void testActionDefaultRedirect() throws Exception {
-        // If user is logged in, but action is something else
-        User user = new User(1, "testUser", "testPass", "test@example.com", "customer");
+        // When a user is logged in and an unknown action is provided,
+        // it should redirect to BookingServlet?action=list
+        User user = new User();
+        user.setId(1);
+        user.setUsername("testUser");
+        user.setPassword("testPass");
+        user.setEmail("test@example.com");
+        user.setRole("customer");
+        
         when(session.getAttribute("user")).thenReturn(user);
         when(request.getParameter("action")).thenReturn("unknown");
 
@@ -75,11 +81,9 @@ public class BookingServletTest {
 
     @Test
     public void testDoPostNotLoggedIn() throws Exception {
-        // If user is not logged in, doPost should redirect to login
+        // When user is not logged in, doPost should redirect to login.jsp
         when(session.getAttribute("user")).thenReturn(null);
         servlet.doPost(request, response);
         verify(response).sendRedirect("login.jsp");
     }
-
-   
 }
