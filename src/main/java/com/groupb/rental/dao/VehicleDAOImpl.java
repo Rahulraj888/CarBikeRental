@@ -171,4 +171,69 @@ public class VehicleDAOImpl implements VehicleDAOInterface {
             logger.log(Level.SEVERE, "Error deleting vehicle with id: " + id, e);
         }
     }
+    
+    @Override
+    public List<Vehicle> getFilteredVehicles(String type, Boolean available, Double minPrice, Double maxPrice) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        // Start with a base query. "WHERE 1=1" allows easy appending of additional clauses.
+        StringBuilder sql = new StringBuilder("SELECT * FROM " + VehicleConstants.TABLE_NAME + " WHERE 1=1");
+
+        // Use a list to hold parameter values to set on the PreparedStatement
+        List<Object> params = new ArrayList<>();
+
+        // Filter by vehicle type if provided
+        if (type != null && !type.trim().isEmpty()) {
+            sql.append(" AND ").append(VehicleConstants.COL_TYPE).append(" = ?");
+            params.add(type);
+        }
+
+        // Filter by availability if provided
+        if (available != null) {
+            sql.append(" AND ").append(VehicleConstants.COL_AVAILABLE).append(" = ?");
+            params.add(available);
+        }
+
+        // Filter by minimum price if provided
+        if (minPrice != null) {
+            sql.append(" AND ").append(VehicleConstants.COL_PRICE_PER_DAY).append(" >= ?");
+            params.add(minPrice);
+        }
+
+        // Filter by maximum price if provided
+        if (maxPrice != null) {
+            sql.append(" AND ").append(VehicleConstants.COL_PRICE_PER_DAY).append(" <= ?");
+            params.add(maxPrice);
+        }
+
+        logger.info("Executing filtered query: " + sql.toString());
+
+        try (
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql.toString())
+        ) {
+            // Set parameters for the PreparedStatement in order
+            int index = 1;
+            for (Object param : params) {
+                ps.setObject(index++, param);
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Vehicle v = new Vehicle();
+                v.setId(rs.getInt(VehicleConstants.COL_ID));
+                v.setType(rs.getString(VehicleConstants.COL_TYPE));
+                v.setBrand(rs.getString(VehicleConstants.COL_BRAND));
+                v.setModel(rs.getString(VehicleConstants.COL_MODEL));
+                v.setPricePerDay(rs.getDouble(VehicleConstants.COL_PRICE_PER_DAY));
+                v.setAvailable(rs.getBoolean(VehicleConstants.COL_AVAILABLE));
+                vehicles.add(v);
+            }
+            logger.info("Filtered query returned " + vehicles.size() + " vehicles.");
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error fetching filtered vehicles.", e);
+        }
+        return vehicles;
+    }
+
 }
