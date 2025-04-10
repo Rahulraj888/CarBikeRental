@@ -91,12 +91,38 @@ public class VehicleServlet extends HttpServlet {
     private void listVehicles(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         VehicleDAOInterface vehicleDAO = new VehicleDAOImpl();
-        List<Vehicle> list = vehicleDAO.getAllVehicles();
-        logger.info("Fetched " + list.size() + " vehicles from the database.");
+
+        // Retrieve filter parameters from the GET request
+        String filterType = request.getParameter("type");        // "Car", "Bike", or empty
+        String availableParam = request.getParameter("available"); // "true", "false", or empty
+        String minPriceParam = request.getParameter("minPrice");
+        String maxPriceParam = request.getParameter("maxPrice");
+
+        // Convert availability parameter to Boolean if provided
+        Boolean filterAvailable = null;
+        if (availableParam != null && !availableParam.trim().isEmpty()) {
+            filterAvailable = Boolean.valueOf(availableParam);
+        }
+
+        // Convert minPrice and maxPrice parameters to Double if provided
+        Double filterMinPrice = null;
+        if (minPriceParam != null && !minPriceParam.trim().isEmpty()) {
+            filterMinPrice = Double.valueOf(minPriceParam);
+        }
+        Double filterMaxPrice = null;
+        if (maxPriceParam != null && !maxPriceParam.trim().isEmpty()) {
+            filterMaxPrice = Double.valueOf(maxPriceParam);
+        }
+
+        // Call the DAO method to retrieve vehicles based on filters.
+        List<Vehicle> list = vehicleDAO.getFilteredVehicles(filterType, filterAvailable, filterMinPrice, filterMaxPrice);
+
+        logger.info("Fetched " + list.size() + " vehicles with applied filters.");
         request.setAttribute("vehicleList", list);
         RequestDispatcher dispatcher = request.getRequestDispatcher("vehicleList.jsp");
         dispatcher.forward(request, response);
     }
+
 
     /**
      * Forwards to the vehicle form JSP for a new vehicle entry.

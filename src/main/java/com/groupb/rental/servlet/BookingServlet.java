@@ -127,7 +127,7 @@ public class BookingServlet extends HttpServlet {
             booking.setBookingDate(bookingDate);
             booking.setReturnDate(returnDate);
             booking.setTotalCost(totalCost);
-            booking.setStatus("pending");
+            booking.setStatus("confirmed");
             
             // Attempt to add the booking using DAO
             BookingDAOInterface bookingDAO = new BookingDAOImpl();

@@ -9,4 +9,7 @@ public interface VehicleDAOInterface {
     Vehicle getVehicleById(int id);
     void updateVehicle(Vehicle vehicle);
     void deleteVehicle(int id);
+
+    // New method for filtering vehicles
+    List<Vehicle> getFilteredVehicles(String type, Boolean available, Double minPrice, Double maxPrice);
 }
