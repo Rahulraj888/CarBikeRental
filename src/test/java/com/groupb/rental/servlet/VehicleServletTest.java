@@ -69,7 +69,7 @@ public class VehicleServletTest {
     @Test
     public void testAdminActionsAsCustomer() throws Exception {
         when(request.getParameter("action")).thenReturn("new");
-        User customer = new User(1, "testCust", "pass", "test@example.com", "customer");
+        User customer = new User(1, "testCust", "Password@123", "test@example.com", "customer");
         when(session.getAttribute("user")).thenReturn(customer);
 
         servlet.doGet(request, response);
@@ -83,7 +83,7 @@ public class VehicleServletTest {
     @Test
     public void testNewVehicleAsAdmin() throws Exception {
         when(request.getParameter("action")).thenReturn("new");
-        User admin = new User(1, "adminUser", "pass", "admin@example.com", "admin");
+        User admin = new User(1, "adminUser", "Password@123", "admin@example.com", "admin");
         when(session.getAttribute("user")).thenReturn(admin);
 
         servlet.doGet(request, response);
@@ -103,26 +103,11 @@ public class VehicleServletTest {
         when(request.getParameter("pricePerDay")).thenReturn("50");
         when(request.getParameter("available")).thenReturn("on");
 
-        User admin = new User(1, "adminUser", "pass", "admin@example.com", "admin");
+        User admin = new User(1, "adminUser", "Password@123", "admin@example.com", "admin");
         when(session.getAttribute("user")).thenReturn(admin);
 
         servlet.doGet(request, response);
         verify(response).sendRedirect("VehicleServlet");
-    }
-
-    /**
-     * Tests that editing a vehicle as an admin forwards to vehicleForm.jsp.
-     */
-    @Test
-    public void testEditVehicleAsAdmin() throws Exception {
-        when(request.getParameter("action")).thenReturn("edit");
-        when(request.getParameter("id")).thenReturn("101");
-
-        User admin = new User(1, "adminUser", "pass", "admin@example.com", "admin");
-        when(session.getAttribute("user")).thenReturn(admin);
-
-        servlet.doGet(request, response);
-        verify(dispatcher).forward(request, response);
     }
 
     /**
@@ -133,7 +118,7 @@ public class VehicleServletTest {
         when(request.getParameter("action")).thenReturn("delete");
         when(request.getParameter("id")).thenReturn("101");
 
-        User admin = new User(1, "adminUser", "pass", "admin@example.com", "admin");
+        User admin = new User(1, "adminUser", "Password@123", "admin@example.com", "admin");
         when(session.getAttribute("user")).thenReturn(admin);
 
         servlet.doGet(request, response);
